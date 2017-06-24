@@ -18,7 +18,20 @@
 #
 def triangle(a, b, c):
     # DELETE 'PASS' AND WRITE THIS CODE
-    pass
+    my_set = {a, b, c}
+
+    if any(item <= 0 for item in my_set):
+        raise TriangleError("All sides should be greater than 0")
+    elif a+b <= c or b+c <= a or c+a <= b:
+        raise TriangleError("The sum of any two sides should be greater than the third one")
+    elif len(my_set) > 3:
+    	return "Invalid data"
+    elif len(my_set) == 1:
+    	return "equilateral"
+    elif len(my_set) == 2:
+    	return "isosceles"
+    else:
+    	return "scalene"
 
 # Error class used in part 2.  No need to change this code.
 class TriangleError(Exception):
