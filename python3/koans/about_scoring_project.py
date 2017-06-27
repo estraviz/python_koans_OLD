@@ -4,7 +4,7 @@
 from runner.koan import *
 
 # Greed is a dice game where you roll up to five dice to accumulate
-# points.  The following "score" function will be used calculate the
+# points.  The following "score" function will be used to calculate the
 # score of a single roll of the dice.
 #
 # A greed roll is scored as follows:
@@ -34,7 +34,44 @@ from runner.koan import *
 
 def score(dice):
     # You need to write this method
-    pass
+    from collections import Counter
+
+    result = 0
+    
+    # Scoring rules
+    PTS_PER_SET_OF_THREE_ONES = 1000
+    PTS_PER_SET_OF_THREE_NON_ONES = 100
+    PTS_PER_ONE = 100
+    PTS_PER_FIVE = 50
+
+    # Validations
+    try:
+        [int(x) for x in dice]
+    except ValueError:
+        print("Invalid data entry")
+        return 
+
+    if 0 in dice:
+        print("0 is not a valid data entry")
+        return
+
+    # Calculations
+    numbers_and_occurrences = dict(Counter(dice))
+
+    for key, value in numbers_and_occurrences.items():
+        if key == 1:
+            result += (value%3) * PTS_PER_ONE
+            if value >= 3:
+                result += PTS_PER_SET_OF_THREE_ONES 
+        elif key == 5:
+            result += (value%3) * PTS_PER_FIVE
+            if value >= 3:
+                result += PTS_PER_SET_OF_THREE_NON_ONES * key 
+        elif value >= 3:
+            result += PTS_PER_SET_OF_THREE_NON_ONES * key
+
+    return result
+
 
 class AboutScoringProject(Koan):
     def test_score_of_an_empty_list_is_zero(self):
